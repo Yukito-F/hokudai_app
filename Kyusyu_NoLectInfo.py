@@ -2,6 +2,9 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
+csvFile = open("files/•¶Šw•”‹xuî•ñ.csv",'w+',newline='')
+writer = csv.writer(csvFile)
+
 html = urlopen("http://www2.lit.kyushu-u.ac.jp/~syllabus/cgi-bin/class-schedule.cgi?kubun=1")
 bsObj = BeautifulSoup(html, "lxml")
 bsObj.find('br').replace_with(',')
@@ -9,9 +12,6 @@ bsObj.find('br').replace_with(',')
 table = bsObj.findAll("table")[3]
 row = table.findAll("tr")
 rowcus = row[1:]
-
-csvFile = open("files/•¶Šw•”‹xuî•ñ.csv",'w+',newline='')
-writer = csv.writer(csvFile)
 
 try:
     for rows in rowcus:
