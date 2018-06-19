@@ -10,7 +10,7 @@ bsObj = BeautifulSoup(html, "lxml")
 tbody = bsObj.findAll("tbody")[0]
 
 try:
-    forÅ@tbodys in tbody.findAll("tr"):
+    for tbodys in tbody.findAll("tr"):
         csvRow = []
         for cell in tbodys.findAll("td"):   
             celllet = cell.get_text()
