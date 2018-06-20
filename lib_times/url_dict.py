@@ -1,0 +1,22 @@
+class UrlDict:
+    query2url = {
+        "本館": "https://www.lib.hokudai.ac.jp/calendar/central-lib/",
+        "北図書館": "https://www.lib.hokudai.ac.jp/calendar/north-lib/",
+        "文学": "https://www.lib.hokudai.ac.jp/calendar/let/",
+        "教育": "https://www.lib.hokudai.ac.jp/calendar/edu/",
+        "経済": "https://www.lib.hokudai.ac.jp/calendar/eco/",
+        "理学": "https://www.lib.hokudai.ac.jp/calendar/sci/",
+        "医学": "https://www.lib.hokudai.ac.jp/calendar/med/",
+        "歯学": "https://www.lib.hokudai.ac.jp/calendar/den/",
+        "薬学": "https://www.lib.hokudai.ac.jp/calendar/pharm/",
+        "工学": "https://www.lib.hokudai.ac.jp/calendar/eng/",
+        "材料化学・情報科学": "https://www.lib.hokudai.ac.jp/calendar/eng/",
+        "農学": "https://www.lib.hokudai.ac.jp/calendar/agr/",
+        "獣医学": "https://www.lib.hokudai.ac.jp/calendar/vet/",
+        "水産学": "https://www.lib.hokudai.ac.jp/calendar/fish/",
+        "地球環境科学": "https://www.lib.hokudai.ac.jp/calendar/env/",
+        "低温": "https://www.lib.hokudai.ac.jp/calendar/lowtem/",
+        "北キャンパス": "https://www.lib.hokudai.ac.jp/calendar/northern-campus/",
+        "スラブ": "https://www.lib.hokudai.ac.jp/calendar/slv/",
+        "保健科": "https://www.lib.hokudai.ac.jp/calendar/health/",
+    }
