@@ -2,7 +2,7 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-csvFile = open("files/Engineering_NoLectInfo.csv",'w+',newline='')
+csvFile = open("files/Engineering_NoLectInfo.csv", 'w+', newline='')
 writer = csv.writer(csvFile)
 
 html = urlopen("https://www.eng.hokudai.ac.jp/lecinfo/")
@@ -12,9 +12,9 @@ tbody = bsObj.findAll("tbody")[0]
 try:
     for tbodys in tbody.findAll("tr"):
         csvRow = []
-        for cell in tbodys.findAll("td"):   
+        for cell in tbodys.findAll("td"):
             celllet = cell.get_text()
             csvRow.append(celllet)
-        writer.writerow(csvRow) 
+            writer.writerow(csvRow)
 finally:
     csvFile.close()
