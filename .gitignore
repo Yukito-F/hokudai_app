@@ -1,4 +1,4 @@
 .DS_Store
-lib_hokudai.csv
+*.csv
 __pychache__/
 
