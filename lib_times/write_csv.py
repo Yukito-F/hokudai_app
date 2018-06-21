@@ -9,8 +9,6 @@ from lib_open import make_legend_dict
 """
 query = sys.argv[1]
 
-# 工学と低温は現段階で非対応
-
 csvFile = open("./lib_hokudai.csv", 'w+', newline='')
 writer = csv.writer(csvFile)
 tbody, class2color, color2time = make_legend_dict(query)

@@ -1,15 +1,14 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import csv
-import os, sys
-sys.path.append('.')
 import re
+import os, sys
+sys.path.append('..')
+from webscrapying.webscrapying import get_soup_with_driver
 
-# webdriverで実行
-driver = webdriver.Chrome(executable_path=r'')
-driver.get('https://www.hokudai.seikyou.ne.jp/bhours/')
-source = driver.page_source
-soup = BeautifulSoup(source, 'lxml')
+# 現状、driver_pathはこのままでどのPCでもおそらく実行可能
+soup = get_soup_with_driver(url='https://www.hokudai.seikyou.ne.jp/bhours/',
+                            driver_path=os.path.abspath('../webscrapying') + '/chromedriver')
 
 calendar = soup.findAll(id="schewrap")[0]
 tbody = calendar.findAll("tbody")[0]

@@ -1,9 +1,9 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import os, sys
+import re
 sys.path.append('.')
 from url_dict import UrlDict
-import re
 
 # 凡例の辞書とテーブルをリターンする関数
 def make_legend_dict(query):
