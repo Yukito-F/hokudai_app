@@ -1,25 +1,38 @@
-import time, csv
+import time, csv, os
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
-csvFile = open("files/FirstYear_NoLectInfo.csv",'w+',newline='', encoding='CP932', errors='ignore')
-writer = csv.writer(csvFile)
-
-driver = webdriver.Chrome(executable_path = r'C:\Users\Tomoyuki Fujiwara\Downloads\chromedriver_win32\chromedriver')
-driver.get('http://inform.academic.hokudai.ac.jp/webinfo/p/SerchInfo.aspx?mode=cancel');
+driver = webdriver.Chrome(executable_path = os.path.abspath('.\webscrapying') + '\chromedriver.exe')
+driver.get('http://inform.academic.hokudai.ac.jp/webinfo/p/SerchInfo.aspx?mode=cancel')
 time.sleep(5)
 search_box = driver.find_element_by_name('btnSerch')
 search_box.click()
+Sources = []
 time.sleep(5)
 
+while True:
+    source = driver.page_source
+    Sources.append(source)
+    if 'value="次へ"' in source:
+        if '<span>1</span>' in source:
+            Search = driver.find_element_by_name('rdlGrid$gridList$ctl14$ctl01')
+        else:
+            Search = driver.find_element_by_name('rdlGrid$gridList$ctl14$ctl03')
+        Search.click()
+        time.sleep(5)
+    else:
+        break
+driver.quit()
+
+csvFile = open(".\FirstYear_NoLectInfo.csv",'w+',newline='', encoding='CP932', errors='ignore')
+writer = csv.writer(csvFile)
+
 try:
-    while True:
-        source = driver.page_source
-        bsObj = BeautifulSoup(source, 'lxml')
+    for text in Sources:
+        bsObj = BeautifulSoup(text, 'lxml')
         table = bsObj.findAll("table")[2]
         tr = table.findAll("tr")
         sptr = tr[1:-1]
-
         for trs in sptr:
             csvRow = []
             for td in trs.findAll("td"):
@@ -49,17 +62,5 @@ try:
                     celllet = cellbso.get_text()
                     csvRow.append(celllet)
             writer.writerow(csvRow)
-
-        if 'value="次へ"' in source:
-            if '<span>1</span>' in source:
-                Search = driver.find_element_by_name('rdlGrid$gridList$ctl14$ctl01')
-            else:
-                Search = driver.find_element_by_name('rdlGrid$gridList$ctl14$ctl03')
-            Search.click()
-            time.sleep(5)
-        else:
-            break       
-
 finally:
     csvFile.close()
-    driver.quit()
