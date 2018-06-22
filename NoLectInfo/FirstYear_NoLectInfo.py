@@ -2,7 +2,7 @@ import time, csv, os
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
-driver = webdriver.Chrome(executable_path = os.path.abspath('.\webscrapying') + '\chromedriver.exe')
+driver = webdriver.Chrome(executable_path = os.path.abspath('..\webscrapying') + '\chromedriver.exe')
 driver.get('http://inform.academic.hokudai.ac.jp/webinfo/p/SerchInfo.aspx?mode=cancel')
 time.sleep(5)
 search_box = driver.find_element_by_name('btnSerch')
