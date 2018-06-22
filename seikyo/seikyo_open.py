@@ -3,8 +3,10 @@ from selenium import webdriver
 import csv
 import re
 import os, sys
-sys.path.append('..')
+sys.path.append(os.pardir)
+print(sys.path)
 from webscrapying.webscrapying import get_soup_with_driver
+
 
 # 現状、driver_pathはこのままでどのPCでもおそらく実行可能
 soup = get_soup_with_driver(url='https://www.hokudai.seikyou.ne.jp/bhours/',
