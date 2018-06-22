@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 #csvファイルを展開（任意のディレクトリにて）及びwriterのセット
-csvFile = open(r"C:\Users\Tomoyuki Fujiwara\files\Engineering_NoLectInfo.csv",'w+',newline='')
+csvFile = open(".\Engineering_NoLectInfo.csv",'w+',newline='')
 writer = csv.writer(csvFile)
 
 #指定したURLのHTMLソースをbeautiful soup固有のオブジェクトとして格納、
