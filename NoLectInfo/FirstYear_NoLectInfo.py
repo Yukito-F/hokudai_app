@@ -9,11 +9,10 @@ def buttonclick(name):
     button.click()
 
 try:
+    # ＜データの取得＞
     # ウェブドライバー起動
     options = ChromeOptions()
-    # ヘッドレスモードを有効にする（次の行をコメントアウトすると画面が表示される）。
     options.add_argument('--headless')
-    # ChromeのWebDriverオブジェクトを作成する。
     driver = Chrome(options = options, executable_path = os.path.abspath(r'.\webscrapying') + r'\chromedriver.exe')
     driver.get('http://inform.academic.hokudai.ac.jp/webinfo/p/SerchInfo.aspx?mode=cancel')
     time.sleep(5)
@@ -22,7 +21,7 @@ try:
     time.sleep(5)
 
     # 最終的にデータベースのテーブルとなる配列
-    data_table = []
+    all_rows = []
     while True: 
         # HTMLソースをbeautifulsoup固有のオブジェクトとして格納
         source = driver.page_source
@@ -32,42 +31,9 @@ try:
         rows = table.findAll("tr")
         specific_rows = rows[1:-1]
 
-        # データ整理
-        for row in specific_rows:
-            # 最終的にデータベースのレコードとなる配列
-            data_record = []
-            for cell in row.findAll("td"):
-                cellstr = str(cell)
-                # 細分したデータに<br/>が含まれていた場合の例外処理
-                if '<br/>' in cellstr:
-                    cellspbr = cellstr.split("<br/>")
-                    cellex = [""] * 4
-                    for cell, i in zip(cellspbr, range(4)):
-                        cellbso = BeautifulSoup(cell, "lxml")
-                        celllet = cellbso.get_text()
-                        cellex[i] = celllet
-                    el1 = cellex[1]
-                    el2 = cellex[2]
-                    cellex[1] = el2
-                    cellex[2] = el1
-                    if ',' in cellex[0]:
-                        cellex2 = cellex[0].split(",")
-                        cellex[0] = cellex2[0]
-                        cellex[1] = cellex2[1]
-                    if ',' in cellex[2]:
-                        cellex3 = cellex[2].split(",")
-                        cellex[2] = cellex3[0]
-                        cellex[3] = cellex3[1]
-                    data_record.extend(cellex)
-                # 問題がなければそのままdata_record配列の一要素として格納
-                else: 
-                    cellbso = BeautifulSoup(cellstr, "lxml")
-                    celllet = cellbso.get_text()
-                    data_record.append(celllet)
-            del data_record[10]
-            del data_record[11]
-            data_table.append(data_record)
-        
+        # データ格納
+        all_rows.append(specific_rows)
+
         # ページ遷移の処理
         if 'value="次へ"' in source:
             if '<span>1</span>' in source:
@@ -81,6 +47,44 @@ try:
     # ドライバー切断
     driver.quit()
     
+    # ＜データ整理＞
+    # all_rowsを要素ごとに分割し、全てを一つの配列にまとめたdata_tableを作成する
+    data_table = []
+    for rows in all_rows:
+        for row in rows:
+            data_record = []
+            for element in row.findAll("td"):
+                element_str = str(element)
+                # 細分したデータに<br/>が含まれていた場合の例外処理
+                if '<br/>' in element_str:
+                    element_spbr = element_str.split("<br/>")
+                    element_ex = [""] * 4
+                    for spc_element, i in zip(element_spbr, range(4)):
+                        element_bso = BeautifulSoup(spc_element, "lxml")
+                        element_let = element_bso.get_text()
+                        element_ex[i] = element_let
+                    el1 = element_ex[1]
+                    el2 = element_ex[2]
+                    element_ex[1] = el2
+                    element_ex[2] = el1
+                    if ',' in element_ex[0]:
+                        element_ex2 = element_ex[0].split(",")
+                        element_ex[0] = element_ex2[0]
+                        element_ex[1] = element_ex2[1]
+                    if ',' in element_ex[2]:
+                        element_ex3 = element_ex[2].split(",")
+                        element_ex[2] = element_ex3[0]
+                        element_ex[3] = element_ex3[1]
+                    data_record.extend(element_ex)
+                # 問題がなければそのままdata_record配列の一要素として格納
+                else: 
+                    element_bso = BeautifulSoup(element_str, "lxml")
+                    element_let = element_bso.get_text()
+                    data_record.append(element_let)
+            del data_record[13]
+            data_table.append(data_record)
+    
+    # ＜データベースへの格納＞
     # データベース接続
     con = mysql.connector.connect(
         host='127.0.0.1',
@@ -106,6 +110,7 @@ try:
     con.commit()
 
 except:
+    # どこかでエラーが発生した場合、データを削除し「Error」を入力しておく
     # データベース接続
     con = mysql.connector.connect(
         host='127.0.0.1',
